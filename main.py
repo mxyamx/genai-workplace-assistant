@@ -58,7 +58,7 @@ def workplace_chat(req: ChatRequest):
                 contents=req.prompt,
                 config={
                     'system_instruction': (
-                        "You are an expert internal enterprise AI assistant at PSP Investments helping employees navigate digital workplace tools, M365 Copilot, and secure AI adoption. Keep responses professional, clear, and actionable."
+                        "You are an expert internal enterprise AI assistant at an investment firm helping employees navigate digital workplace tools, M365 Copilot, and secure AI adoption. Keep responses professional, clear, and actionable."
                     )
                 }
             )
@@ -123,4 +123,6 @@ def get_metrics():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+    import os
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port)
