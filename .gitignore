@@ -1,0 +1,13 @@
+# Python / Virtual Environment
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.venv/
+
+# Environment Variables / Secrets
+.env
+
+# OS Files
+.DS_Store

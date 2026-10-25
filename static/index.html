@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenAI & Digital Workplace Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --psp-navy: #0a192f;
+            --psp-navy-light: #172a45;
+            --psp-cream: #fcfbfa;
+            --psp-cream-card: #f4f1ea;
+            --psp-accent: #2563eb;
+        }
+        body { 
+            background-color: var(--psp-cream); 
+            color: var(--psp-navy);
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        /* Top Navigation Bar */
+        .psp-header {
+            background-color: var(--psp-navy);
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .psp-logo {
+            font-weight: 700;
+            letter-spacing: 2px;
+            font-size: 1.4rem;
+            color: white;
+            text-decoration: none;
+        }
+        .psp-nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .psp-nav-links a:hover, .psp-nav-links a.active {
+            color: white;
+        }
+
+        /* Hero Subheader */
+        .hero-banner {
+            background-color: var(--psp-navy);
+            color: white;
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+        .hero-banner h1 {
+            font-weight: 300;
+            letter-spacing: -0.5px;
+        }
+
+        /* Cards & UI */
+        .card { 
+            background-color: white;
+            border: 1px solid #e2e8f0; 
+            border-radius: 4px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
+        }
+        .stat-card {
+            background-color: var(--psp-cream-card);
+            border: 1px solid #e5e7eb;
+            text-align: center;
+            padding: 25px;
+        }
+        .btn-psp { 
+            background-color: var(--psp-navy); 
+            color: white; 
+            border-radius: 2px;
+            font-weight: 500;
+            padding: 10px 20px;
+        }
+        .btn-psp:hover { 
+            background-color: var(--psp-navy-light); 
+            color: white; 
+        }
+        .nav-pills .nav-link {
+            color: var(--psp-navy);
+            background: transparent;
+            border-radius: 2px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            border-left: 3px solid transparent;
+        }
+        .nav-pills .nav-link.active {
+            background-color: #e2e8f0;
+            color: var(--psp-navy);
+            border-left-color: var(--psp-navy);
+        }
+        pre { background: var(--psp-navy); color: #f8fafc; padding: 20px; border-radius: 4px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+
+
+
+<!-- Hero Section -->
+<div class="hero-banner">
+    <div class="container-fluid px-4">
+        <h1 class="display-6">GenAI & Digital Workplace Hub</h1>
+        <p class="text-muted mb-0" style="color: #94a3b8 !important;">Internal portal supporting AI tool adoption, Claude Skills, and Microsoft 365 Copilot integration across business lines.</p>
+    </div>
+</div>
+
+<div class="container-fluid px-4 mb-5">
+    <div class="row">
+        <!-- Sidebar Navigation Tabs -->
+        <div class="col-md-3 col-lg-2 mb-4">
+            <div class="card p-3">
+                <div class="nav flex-column nav-pills" role="tablist">
+                    <button class="nav-link active text-start" data-bs-toggle="pill" data-bs-target="#content-chat">💬 Assistant Chat</button>
+                    <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#content-playbook" onclick="fetchMetrics()">📖 Playbook Generator</button>
+                    <button class="nav-link text-start" data-bs-toggle="pill" data-bs-target="#content-metrics" onclick="fetchMetrics()">📊 Adoption Metrics</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Workspace Area -->
+        <div class="col-md-9 col-lg-10">
+            <div class="tab-content">
+                
+                <!-- TAB 1: Chat Assistant -->
+                <div class="tab-pane fade show active" id="content-chat">
+                    <div class="card p-4 mb-3">
+                        <h4 class="mb-3 font-weight-normal">Internal AI Assistant</h4>
+                        <p class="text-muted small">Query guidelines on secure AI adoption, prompt patterns, and collaborative workplace workflows.</p>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">PROMPT</label>
+                            <textarea id="chatInput" class="form-control" rows="3" placeholder="e.g., How should investment teams securely use M365 Copilot for summarising board decks?"></textarea>
+                        </div>
+                        <button class="btn btn-psp w-25" onclick="sendChat()">Submit Query</button>
+                    </div>
+                    <div class="card p-4 d-none" id="chatResultCard">
+                        <h6 class="text-uppercase text-muted small">Response Output</h6>
+                        <div id="chatOutput" class="mt-2 text-dark"></div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: AI Playbook Generator -->
+                <div class="tab-pane fade" id="content-playbook">
+                    <div class="card p-4 mb-3">
+                        <h4 class="mb-3 font-weight-normal">AI Playbook Generator</h4>
+                        <p class="text-muted small">Convert unstructured department meeting notes into standardized AI integration guides.</p>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">WORKFLOW TITLE</label>
+                            <input type="text" id="playbookTitle" class="form-control" placeholder="e.g., Real Estate Portfolio ESG Data Extraction">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">RAW BRAINSTORMING NOTES</label>
+                            <textarea id="playbookNotes" class="form-control" rows="4" placeholder="Paste raw notes or transcript summary here..."></textarea>
+                        </div>
+                        <button class="btn btn-psp w-25" onclick="generatePlaybook()">Generate Playbook</button>
+                    </div>
+                    <div class="card p-4 d-none" id="playbookResultCard">
+                        <h6 class="text-uppercase text-muted small">Structured Playbook Output</h6>
+                        <pre id="playbookOutput"></pre>
+                    </div>
+                </div>
+
+                <!-- TAB 3: Adoption Metrics & Feedback -->
+                <div class="tab-pane fade" id="content-metrics">
+                    <div class="row mb-4">
+                        <div class="col-md-4 mb-3">
+                            <div class="card stat-card">
+                                <span class="text-muted small text-uppercase">Total Assistant Queries</span>
+                                <h2 id="metricQueries" class="mt-2 mb-0" style="color: var(--psp-navy);">0</h2>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card stat-card">
+                                <span class="text-muted small text-uppercase">Playbooks Generated</span>
+                                <h2 id="metricPlaybooks" class="mt-2 mb-0" style="color: var(--psp-navy);">0</h2>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card stat-card">
+                                <span class="text-muted small text-uppercase">User Feedback Logs</span>
+                                <h2 id="metricFeedback" class="mt-2 mb-0" style="color: var(--psp-navy);">0</h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card p-4">
+                        <h4 class="mb-3 font-weight-normal">Submit User Feedback & Telemetry</h4>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">FEATURE EVALUATED</label>
+                            <select id="feedbackFeature" class="form-select">
+                                <option value="Assistant Chat">Assistant Chat</option>
+                                <option value="Playbook Generator">Playbook Generator</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">SATISFACTION RATING (1-5)</label>
+                            <input type="number" id="feedbackRating" class="form-control" min="1" max="5" value="5">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">COMMENTS</label>
+                            <textarea id="feedbackComment" class="form-control" rows="2" placeholder="Significantly streamlined our team's workflow documentation."></textarea>
+                        </div>
+                        <button class="btn btn-outline-dark w-25" onclick="submitFeedback()">Log Feedback</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    async function sendChat() {
+        const promptInput = document.getElementById('chatInput');
+        const prompt = promptInput.value.trim();
+        if (!prompt) return;
+
+        const resCard = document.getElementById('chatResultCard');
+        const out = document.getElementById('chatOutput');
+        out.innerText = "Processing query...";
+        resCard.classList.remove('d-none');
+
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: prompt, user_role: "Employee" })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Server returned status ${response.status}`);
+            }
+
+            const data = await response.json();
+            // Format line breaks cleanly
+            out.innerHTML = (data.response || "No response received.").replace(/\n/g, '<br>');
+        } catch (err) {
+            out.innerText = "Error connecting to backend: " + err.message;
+            console.error(err);
+        }
+    }
+
+    async function generatePlaybook() {
+        const title = document.getElementById('playbookTitle').value.trim();
+        const notes = document.getElementById('playbookNotes').value.trim();
+        if (!title || !notes) return;
+
+        const resCard = document.getElementById('playbookResultCard');
+        const out = document.getElementById('playbookOutput');
+        out.innerText = "Generating structured playbook...";
+        resCard.classList.remove('d-none');
+
+        try {
+            const response = await fetch('/api/generate-playbook', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ workflow_title: title, raw_notes: notes })
+            });
+
+            const data = await response.json();
+            out.innerText = data.playbook || "Error generating playbook.";
+        } catch (err) {
+            out.innerText = "Error connecting to backend.";
+        }
+    }
+
+    async function submitFeedback() {
+        const feature = document.getElementById('feedbackFeature').value;
+        const rating = parseInt(document.getElementById('feedbackRating').value);
+        const comment = document.getElementById('feedbackComment').value;
+
+        await fetch('/api/feedback', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ feature: feature, rating: rating, comment: comment })
+        });
+        alert('Telemetry and feedback recorded successfully.');
+        fetchMetrics();
+    }
+
+    async function fetchMetrics() {
+        try {
+            const response = await fetch('/api/metrics');
+            const data = await response.json();
+            document.getElementById('metricQueries').innerText = data.total_queries;
+            document.getElementById('metricPlaybooks').innerText = data.playbooks_generated;
+            document.getElementById('metricFeedback').innerText = data.feedback_logs.length;
+        } catch (e) {
+            console.error("Could not fetch metrics", e);
+        }
+    }
+</script>
+</body>
+</html>
